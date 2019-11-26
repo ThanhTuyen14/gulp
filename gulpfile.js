@@ -16,7 +16,8 @@ const _paths = {
     pug: 'template/**/*.pug',
     scss: 'template/assets/scss/**/*.scss',
     js: 'template/assets/js/**/*.js',
-    images: 'template/assets/images/*'
+    images: 'template/assets/images/*',
+    data: 'template/data/*.json'
 };
 
 const reloadBrowserServer = (done) => {
@@ -87,11 +88,18 @@ const minHtml = () => {
         .pipe(gulp.dest(_paths.public));
 }
 
+const copyData = () => {
+    return gulp
+        .src(_paths.data)
+        .pipe(gulp.dest(_paths.public + 'data'));
+}
+
 const watchFuction = () => {
     gulp.watch(_paths.js , gulp.series(minJs));
     gulp.watch(_paths.scss, gulp.series(minCss));
     gulp.watch(_paths.pug, gulp.series(pugHtml, minHtml));
     gulp.watch(_paths.pug, gulp.series(img));
+    gulp.watch(_paths.pug, gulp.series(copyData));
     gulp.watch(_paths.public, reloadBrowserServer);
 }
 
